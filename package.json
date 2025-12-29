@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/simone-gasparini-94/expense-tracker/issues"
   },
-  "homepage": "https://github.com/simone-gasparini-94/expense-tracker#readme"
+  "homepage": "https://github.com/simone-gasparini-94/expense-tracker#readme",
+  "dependencies": {
+    "commander": "^14.0.2"
+  }
 }
