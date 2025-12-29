@@ -3,7 +3,6 @@
 import fs from "fs";
 import { Command } from 'commander';
 
-let expenses = [];
 const program = new Command();
 
 program
@@ -15,28 +14,27 @@ program
     .requiredOption("--description <description>")
     .requiredOption("--amount <amount>")
     .action((options) => {
+        const expenses = loadExpenses();
         let expense = {
             description: options.description,
             amount: options.amount,
         };
         expenses.push(expense);
+        saveExpenses(expenses);
     });
 
-loadExpenses();
 program.parse();
-saveExpenses();
-
 
 function loadExpenses() {
     if (!fs.existsSync("expenses.json")) {
-        fs.writeFileSync("expenses.json", JSON.stringify(expenses, null, 2))
+        return [];
     } else {
         const expensesJSON = fs.readFileSync("expenses.json", "utf-8");
-        expenses = JSON.parse(expensesJSON);
+        return JSON.parse(expensesJSON);
     }
 }
 
-function saveExpenses() {
+function saveExpenses(expenses) {
     const expensesJSON = JSON.stringify(expenses, null, 2);
     fs.writeFileSync("expenses.json", expensesJSON);
 }
