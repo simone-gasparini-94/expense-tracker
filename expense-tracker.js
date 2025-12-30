@@ -15,7 +15,14 @@ program
     .requiredOption("--amount <amount>")
     .action((options) => {
         const expenses = loadExpenses();
-        let expense = {
+        const dateString = new Date().toISOString().slice(0, 10);
+        const array = dateString.split("-");
+        const expense = {
+            id: (expenses.length + 1).toString(),
+            date: dateString,
+            year: array[0],
+            month: array[1],
+            day: array[2],
             description: options.description,
             amount: options.amount,
         };
