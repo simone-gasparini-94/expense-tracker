@@ -26,6 +26,10 @@ program
     .requiredOption("--description <description>")
     .action(execute);
 
+program
+    .command("list")
+    .action(execute);
+
 program.parse();
 
 function execute(options, command) {
@@ -33,6 +37,7 @@ function execute(options, command) {
         add: addExpense,
         delete: deleteExpense,
         update: updateExpense,
+        list: listExpenses,
     }
     const expenses = loadExpenses();
     actions[command.name()](expenses, options);
@@ -77,6 +82,18 @@ function updateExpense(expenses, options) {
     saveExpenses(expenses);
 }
 
+function listExpenses(expenses, options) {
+    if (expenses.length == 0) {
+        console.log("Expenses list is empty");
+        return ;
+    }
+    printHeader();
+    for (let v of expenses) {
+        let formattedString = formatString(v.description, 20);
+        console.log(`${v.id}\t\t${v.date}\t${formattedString}\t${v.amount}`);
+    }
+}
+
 function loadExpenses() {
     if (!fs.existsSync("expenses.json")) {
         return [];
@@ -101,4 +118,18 @@ function checkIdValidity(expenses, id) {
     if (id < 1 || id > expenses.length) {
         throw new Error("Invalid ID");
     }
+}
+
+function printHeader() {
+    console.log("ID\t\tDate\t\tDescription\t\tAmount");
+}
+
+function formatString(string, n) {
+    let newString;
+    if (string.length > n) {
+        newString = string.slice(0, n - 3) + "...";
+    } else {
+        newString = string.padEnd(n, " ");
+    }
+    return (newString);
 }
