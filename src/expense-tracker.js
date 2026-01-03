@@ -30,4 +30,9 @@ program
     .command("list")
     .action(execute);
 
+program
+    .command("summary")
+    .option("--month <month>")
+    .action(execute);
+
 program.parse();

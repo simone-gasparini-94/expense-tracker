@@ -1,5 +1,7 @@
-import { loadExpenses, saveExpenses } from "./file-system.js";
-import { updateIds,  checkIdValidity, printHeader, formatString} from "./utils.js";
+import { loadExpenses, saveExpenses }
+    from "./file-system.js";
+import { updateIds,  checkIdValidity, printHeader, formatString}
+    from "./utils.js";
 
 export function execute(options, command) {
     const actions = {
@@ -7,6 +9,7 @@ export function execute(options, command) {
         delete: deleteExpense,
         update: updateExpense,
         list: listExpenses,
+        summary: showSummary,
     }
     const expenses = loadExpenses();
     actions[command.name()](expenses, options);
@@ -51,7 +54,7 @@ function updateExpense(expenses, options) {
     saveExpenses(expenses);
 }
 
-function listExpenses(expenses, options) {
+function listExpenses(expenses) {
     if (expenses.length == 0) {
         console.log("Expenses list is empty");
         return ;
@@ -61,4 +64,12 @@ function listExpenses(expenses, options) {
         let formattedString = formatString(v.description, 20);
         console.log(`${v.id}\t\t${v.date}\t${formattedString}\t${v.amount}`);
     }
+}
+
+function showSummary(expenses, options) {
+    if (expenses.length == 0) {
+        console.log("Expenses list is empty");
+        return ;
+    }
+    let total = 0;
 }
