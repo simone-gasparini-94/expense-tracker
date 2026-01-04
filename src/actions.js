@@ -16,23 +16,22 @@ export function execute(options, command) {
 }
 
 function addExpense(expenses, options) {
-    const dateString = new Date().toISOString().slice(0, 10);
-    const array = dateString.split("-");
+    const d = new Date();
     const expense = {
         id: expenses.length + 1,
         description: options.description,
         amount: +options.amount,
-        date: dateString,
-        year: array[0],
-        month: array[1],
-        day: array[2]
+        date: d.toISOString().slice(0, 10),
+        year: d.getFullYear(),
+        month: d.getMonth() + 1,
+        day: d.getDate()
     };
     expenses.push(expense);
     saveExpenses(expenses); 
 }
 
 function deleteExpense(expenses, options) {
-    let id = +options.id;
+    let id = Number(options.id);
     checkIdValidity(expenses, id);
     let newExpenses = [];
     for (let v of expenses) {
@@ -44,7 +43,7 @@ function deleteExpense(expenses, options) {
 }
 
 function updateExpense(expenses, options) {
-    let id = +options.id;
+    let id = Number(options.id);
     checkIdValidity(expenses, id);
     for (let v of expenses) {
         if (v.id == id) {
@@ -71,5 +70,34 @@ function showSummary(expenses, options) {
         console.log("Expenses list is empty");
         return ;
     }
-    let total = 0;
+    const months = [
+        null,
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+    ];
+    const selectedMonth = options.month ? Number(options.month) : null;
+    const year = new Date().getFullYear();
+    const total = expenses.reduce((sum, e) => {
+        if (!selectedMonth ||
+            (selectedMonth === e.month && year === e.year)) {
+            return sum + e.amount;
+        }
+        return sum;
+    }, 0);
+    if (selectedMonth) {
+        console.log(`Total expenses for ${months[selectedMonth]}: `
+            + `€${total}`);
+    } else {
+        console.log(`Total expenses: €${total}`);
+    }
 }
