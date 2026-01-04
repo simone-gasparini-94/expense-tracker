@@ -27,11 +27,11 @@ function addExpense(expenses, options) {
         day: d.getDate()
     };
     expenses.push(expense);
-    saveExpenses(expenses); 
+    saveExpenses(expenses);
 }
 
 function deleteExpense(expenses, options) {
-    let id = Number(options.id);
+    const id = Number(options.id);
     checkIdValidity(expenses, id);
     let newExpenses = [];
     for (let v of expenses) {
@@ -43,7 +43,7 @@ function deleteExpense(expenses, options) {
 }
 
 function updateExpense(expenses, options) {
-    let id = Number(options.id);
+    const id = Number(options.id);
     checkIdValidity(expenses, id);
     for (let v of expenses) {
         if (v.id == id) {
